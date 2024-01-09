@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "YouTrack enchancements",
+  "version": "0.1",
+  "description": "Улучшения для Ютрека, которые мб сделают жизнь немного легче",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://pvs-studio.myjetbrains.com/*"
+      ],
+      "js": [
+        "src/main.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage"
+  ]
+}

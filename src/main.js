@@ -1,24 +1,30 @@
-hideBoardsElem();
+function handleElementAdded(mutationsList, observer) {
+  for (const mutation of mutationsList) {
+    if (mutation.type === "childList") {
+      const boardsElem = document.querySelector('[data-test="added-boards"]');
 
-function hideBoardsElem() {
-  const observer = new MutationObserver((mutationRecords) => {
-    mutationRecords.forEach((mutation) => {
-      const addedNodes = [...mutation.addedNodes];
-
-      const contentElem = addedNodes.find(
-        (node) => node.dataset && node.dataset.test === "ticket-content"
-      );
-      if (contentElem) {
-        const boardsElem = contentElem.querySelector(
-          `[data-test=board-editor]`
-        );
-        boardsElem.style.display = "none";
+      if (!boardsElem) {
+        continue;
       }
-    });
-  });
 
-  observer.observe(document.querySelector("body"), {
-    subtree: true,
-    childList: true,
-  });
+      const existingTextElement =
+        boardsElem.parentElement.querySelector(".added-boards-text");
+
+      if (existingTextElement) {
+        continue;
+      }
+
+      boardsElem.style.display = "none";
+
+      const textElem = document.createElement("div");
+      textElem.className = "added-boards-text";
+      textElem.textContent = "Здесь были доски 🐱";
+      boardsElem.parentElement.appendChild(textElem);
+
+      observer.disconnect();
+    }
+  }
 }
+
+const observer = new MutationObserver(handleElementAdded);
+observer.observe(document.body, { childList: true, subtree: true });

@@ -5,35 +5,68 @@ function handleElementAdded(mutationsList, observer) {
     }
 
     const boardsElem = document.querySelector('[data-test="added-boards"]');
-    if (!boardsElem) {
-      continue;
+    if (boardsElem) {
+      const existingTextElement =
+        boardsElem.parentElement.querySelector(".added-boards-text");
+
+      if (existingTextElement) {
+        return;
+      }
+
+      boardsElem.style.display = "none";
+
+      const textElem = document.createElement("div");
+      textElem.className = "added-boards-text";
+      textElem.textContent = "Здесь были доски 🐱";
+      textElem.style.color = "hotpink";
+      boardsElem.parentElement.appendChild(textElem);
     }
 
-    const existingTextElement =
-      boardsElem.parentElement.querySelector(".added-boards-text");
+    const boardTags = document.querySelectorAll(
+      `.yt-issue-tags__tag__name__text`
+    );
+    if (boardTags.length > 0) {
+      const overdueTags = Array.from(boardTags).filter((tag) =>
+        tag.textContent.includes("Overdue")
+      );
+      overdueTags.forEach((tag) => {
+        tag.closest("a").style.backgroundColor = "#008eff";
+        tag.closest(".yt-issue-tags__tag").style.backgroundColor = "#008eff";
 
-    if (existingTextElement) {
-      return;
+        tag.textContent = "due date is coming";
+        tag.style.textWrap = "wrap";
+        tag.style.display = "flex";
+
+        const overlordImg = document.createElement("img");
+        overlordImg.src =
+          "https://cdn.7tv.app/emote/603cb5fcc20d020014423c6d/1x.webp";
+        overlordImg.width = "24";
+        overlordImg.style.marginLeft = "5px";
+        tag.append(overlordImg)
+      });
     }
 
-    boardsElem.style.display = "none";
+    const taskTags = document.querySelectorAll(
+      `[data-test="ring-tag"]`
+    );
+    if (taskTags.length > 0) {
+      const overdueTags = Array.from(taskTags).filter((tag) =>
+        tag.textContent.includes("Overdue")
+      );
+      overdueTags.forEach((tag) => {
+        tag.closest("a").style.backgroundColor = "#008eff";
 
-    const textElem = document.createElement("div");
-    textElem.className = "added-boards-text";
-    textElem.textContent = "Здесь были доски 🐱";
-    textElem.style.color = "hotpink";
-    boardsElem.parentElement.appendChild(textElem);
+        tag.textContent = "ding-dong, due date is coming";
+        tag.style.textWrap = "wrap";
 
-    const tags = document.querySelectorAll(`[data-test="ring-tag"]`);
-    const overdueTag = Array.from(tags).find(tag => tag.textContent.includes("Overdue"));
-    overdueTag.style.backgroundColor = "#008eff";
-    overdueTag.textContent = "ding-dong, due date is coming";
-
-    const overlordImg = document.createElement("img");
-    overlordImg.src = "https://cdn.7tv.app/emote/603cb5fcc20d020014423c6d/1x.webp";
-    overlordImg.width = "24";
-    overlordImg.style.marginLeft = "5px";
-    overdueTag.append(overlordImg);
+        const overlordImg = document.createElement("img");
+        overlordImg.src =
+          "https://cdn.7tv.app/emote/603cb5fcc20d020014423c6d/1x.webp";
+        overlordImg.width = "24";
+        overlordImg.style.marginLeft = "5px";
+        tag.append(overlordImg)
+      });
+    } 
   }
 }
 
